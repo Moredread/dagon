@@ -1,3 +1,3 @@
 # dagon
 
-A rust astrophysical hydrodynamics and n-body experiment.
+A astrophysical hydrodynamics and n-body experiment in Rust.
