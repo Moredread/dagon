@@ -39,18 +39,20 @@ fn norm(v: [f64; 2]) -> f64 {
     (v[0] * v[0] + v[1] * v[1]).sqrt()
 }
 
-fn distance(pos1: [f64;2], pos2: [f64; 2]) -> f64 {
-    norm([pos2[0] - pos1[0], pos2[1] - pos1[1]])
-}
-
 fn force_between_particles(particle_1: GravityParticle, particle_2: GravityParticle) -> [f64; 2] {
     newtonian_gravity(particle_1.mass, particle_2.mass, particle_1.position, particle_2.position)
 }
 
-fn sum_force<I: Iterator<Item = GravityParticle>>(particle: GravityParticle, all_particles: I) -> [f64; 2] {
-    all_particles.filter(|&x| x != particle).
-        map(|x| force_between_particles(x, particle)).fold([0f64, 0f64], add)
+fn sum_force<'a, I: Iterator<Item = &'a GravityParticle>>(particle: GravityParticle, all_particles: I) -> [f64; 2] {
+    all_particles.filter(|x| **x != particle).
+        map(|x| force_between_particles(*x, particle)).fold([0f64, 0f64], add)
 }
 
 fn main() {
+    let p1 = GravityParticle { position: [0.0f64, 0.0f64], mass: 1.0 };
+    let p2 = GravityParticle { position: [0.0f64, 1.0f64], mass: 1.0 };
+    let p3 = GravityParticle { position: [0.0f64, 2.0f64], mass: 1.0 };
+
+    let p = [p1, p2, p3];
+    println!("{}", sum_force(p1, p.into_iter())[1]);
 }
