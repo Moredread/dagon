@@ -17,6 +17,7 @@ struct Mesh {
 #[derive(PartialEq, Copy, Clone)]
 struct GravityParticle {
     position: Vector,
+    velocity: Vector,
     mass: f64,
 }
 
@@ -54,26 +55,35 @@ fn main() {
     let mut rng = rand::thread_rng();
 
     let timestep = 0.1f64;
+    let mut t = 0.0f64;
+    let t_end = 10.0f64;
     let n = 1000;
 
-    let p1 = GravityParticle { position: [0.0f64, 0.0f64], mass: 1.0 };
-    let p2 = GravityParticle { position: [0.0f64, 1.0f64], mass: 1.0 };
-
-    let mut ps = vec!(p1, p2);
+    let mut ps = Vec::<GravityParticle>::with_capacity(n);
 
     for _ in 0..n {
         let p = GravityParticle {
             position: [between.ind_sample(&mut rng), between.ind_sample(&mut rng)],
-            mass: between.ind_sample(&mut rng)
+            mass: between.ind_sample(&mut rng),
+            velocity: [0.0, 0.0],
         };
         ps.push(p);
     }
 
-    let mut forces = Vec::<Vector>::with_capacity(ps.len());
+    while t < t_end {
+        let mut forces = Vec::<Vector>::with_capacity(ps.len());
 
-    for i in 0..ps.len() {
-        forces.push(sum_force(ps[i], ps.iter()));
+        for i in 0..ps.len() {
+            forces.push(sum_force(ps[i], ps.iter()));
+        }
+
+        for i in 0..ps.len() {
+            ps[i].velocity = add(ps[i].velocity, scal_mul(timestep, forces[i]));
+            ps[i].position = add(ps[i].position, scal_mul(timestep, ps[i].velocity));
+        }
+
+        t += timestep;
+
+        println!("{} {} {}", t, ps[0].position[0], ps[0].position[1]);
     }
-
-    println!("{} {}", forces[0][0], forces[0][1]);
 }
