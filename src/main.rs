@@ -59,16 +59,11 @@ fn main() {
     let t_end = 10.0f64;
     let n = 1000;
 
-    let mut ps = Vec::<GravityParticle>::with_capacity(n);
-
-    for _ in 0..n {
-        let p = GravityParticle {
-            position: [between.ind_sample(&mut rng), between.ind_sample(&mut rng)],
-            mass: between.ind_sample(&mut rng),
-            velocity: [0.0, 0.0],
-        };
-        ps.push(p);
-    }
+    let mut ps: Vec<GravityParticle> = (0..n).map(|_| GravityParticle {
+        position: [between.ind_sample(&mut rng), between.ind_sample(&mut rng)],
+        mass: between.ind_sample(&mut rng),
+        velocity: [0.0, 0.0],
+    }).collect();
 
     while t < t_end {
         let mut forces = Vec::<Vector>::with_capacity(ps.len());
