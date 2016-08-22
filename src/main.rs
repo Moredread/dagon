@@ -1,7 +1,10 @@
 extern crate rand;
-use rand::distributions::{IndependentSample, Range};
+extern crate nalgebra as na;
 
-type Vector = [f64; 2];
+use rand::distributions::{IndependentSample, Range};
+use na::{Vector2};
+
+type Vector = Vector2<f64>;
 
 struct Data {
     density: f64,
@@ -21,20 +24,20 @@ struct GravityParticle {
     mass: f64,
 }
 
-fn newtonian_gravity(m1: f64, m2: f64, p1: Vector, p2: [f64;2]) -> Vector {
+fn newtonian_gravity(m1: f64, m2: f64, p1: Vector, p2: Vector) -> Vector {
     scal_mul(- m1 * m2 / norm(diff(p2, p1)).powi(2), diff(p2, p1))
 }
 
 fn scal_mul(a:f64, v: Vector) -> Vector {
-    [a * v[0], a * v[1]]
+    Vector::new(a * v[0], a * v[1])
 }
 
 fn add(p1: Vector, p2: Vector) -> Vector {
-    [p1[0] + p2[0], p1[1] + p2[1]]
+    Vector::new(p1[0] + p2[0], p1[1] + p2[1])
 }
 
 fn diff(p1: Vector, p2: Vector) -> Vector {
-    [p1[0] - p2[0], p1[1] - p2[1]]
+    Vector::new(p1[0] - p2[0], p1[1] - p2[1])
 }
 
 fn norm(v: Vector) -> f64 {
@@ -47,7 +50,7 @@ fn force_between_particles(particle_1: GravityParticle, particle_2: GravityParti
 
 fn sum_force<'a, I: Iterator<Item = &'a GravityParticle>>(particle: GravityParticle, all_particles: I) -> Vector {
     all_particles.filter(|x| **x != particle).
-        map(|x| force_between_particles(*x, particle)).fold([0f64, 0f64], add)
+        map(|x| force_between_particles(*x, particle)).fold(Vector::new(0f64, 0f64), add)
 }
 
 fn main() {
@@ -60,9 +63,9 @@ fn main() {
     let n = 1000;
 
     let mut ps: Vec<GravityParticle> = (0..n).map(|_| GravityParticle {
-        position: [between.ind_sample(&mut rng), between.ind_sample(&mut rng)],
+        position: Vector::new(between.ind_sample(&mut rng), between.ind_sample(&mut rng)),
         mass: between.ind_sample(&mut rng),
-        velocity: [0.0, 0.0],
+        velocity: Vector::new(0.0, 0.0),
     }).collect();
 
     while t < t_end {
