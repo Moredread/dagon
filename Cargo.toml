@@ -6,3 +6,4 @@ authors = ["André-Patrick Bubel <code@andre-bubel.de>"]
 [dependencies]
 rand = "*"
 nalgebra = "*"
+num = "*"

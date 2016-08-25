@@ -1,11 +1,13 @@
 extern crate rand;
 extern crate nalgebra as na;
+extern crate num;
 
 use rand::distributions::{IndependentSample, Range};
 use std::ops::Add;
-use na::{Vector2, Norm};
+use na::{Vector3, Norm};
+use num::{Zero};
 
-type Vector = Vector2<f64>;
+type Vector = Vector3<f64>;
 
 struct Data {
     density: f64,
@@ -35,7 +37,7 @@ fn force_between_particles(particle_1: GravityParticle, particle_2: GravityParti
 
 fn sum_force<'a, I: Iterator<Item = &'a GravityParticle>>(particle: GravityParticle, all_particles: I) -> Vector {
     all_particles.filter(|x| **x != particle).
-        map(|x| force_between_particles(*x, particle)).fold(Vector::new(0f64, 0f64), Vector::add)
+        map(|x| force_between_particles(*x, particle)).fold(Vector::zero(), Vector::add)
 }
 
 fn main() {
@@ -48,9 +50,9 @@ fn main() {
     let n = 1000;
 
     let mut ps: Vec<GravityParticle> = (0..n).map(|_| GravityParticle {
-        position: Vector::new(between.ind_sample(&mut rng), between.ind_sample(&mut rng)),
+        position: Vector::new(between.ind_sample(&mut rng), between.ind_sample(&mut rng), between.ind_sample(&mut rng)),
         mass: between.ind_sample(&mut rng),
-        velocity: Vector::new(0.0, 0.0),
+        velocity: Vector::new(0.0, 0.0, 0.0),
     }).collect();
 
     while t < t_end {
