@@ -54,11 +54,7 @@ fn main() {
     }).collect();
 
     while t < t_end {
-        let mut forces = Vec::<Vector>::with_capacity(ps.len());
-
-        for i in 0..ps.len() {
-            forces.push(sum_force(ps[i], ps.iter()));
-        }
+        let forces: Vec<Vector> = ps.iter().map( |p| sum_force(*p, ps.iter()) ).collect();
 
         for i in 0..ps.len() {
             ps[i].velocity = ps[i].velocity + timestep * forces[i];
