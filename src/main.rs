@@ -1,11 +1,19 @@
 extern crate rand;
 extern crate nalgebra as na;
 extern crate num;
+extern crate rmp_serialize as msgpack;
+extern crate rustc_serialize;
+
+use rustc_serialize::{Encodable, Decodable};
+use msgpack::Encoder;
 
 use rand::distributions::{IndependentSample, Range};
 use std::ops::Add;
 use na::{Vector3, Norm};
 use num::{Zero};
+use std::io::prelude::*;
+use std::fs::File;
+use std::fmt::format;
 
 type Vector = Vector3<f64>;
 
@@ -20,7 +28,7 @@ struct Mesh {
     cell_width: f64,
 }
 
-#[derive(PartialEq, Copy, Clone)]
+#[derive(RustcEncodable, RustcDecodable, PartialEq, Copy, Clone)]
 struct GravityParticle {
     position: Vector,
     velocity: Vector,
@@ -47,13 +55,15 @@ fn main() {
     let timestep = 0.1f64;
     let mut t = 0.0f64;
     let t_end = 10.0f64;
-    let n = 1000;
+    let n = 1000000;
 
     let mut ps: Vec<GravityParticle> = (0..n).map(|_| GravityParticle {
         position: Vector::new(between.ind_sample(&mut rng), between.ind_sample(&mut rng), between.ind_sample(&mut rng)),
         mass: between.ind_sample(&mut rng),
         velocity: Vector::zero(),
     }).collect();
+
+    let mut step = 0u64;
 
     while t < t_end {
         let forces: Vec<Vector> = ps.iter().map( |p| sum_force(*p, ps.iter()) ).collect();
@@ -63,7 +73,14 @@ fn main() {
             ps[i].position = ps[i].position + timestep * ps[i].velocity;
         }
 
+        let mut buf = Vec::new();
+        ps.encode(&mut Encoder::new(&mut buf));
+
+        let mut f = File::create(format!("data_{}.dat", step)).expect("Couldn't open file");
+        f.write_all(buf.as_ref()).expect("Couldn't write to file");
+
         t += timestep;
+        step += 1;
 
         println!("{} {} {}", t, ps[0].position[0], ps[0].position[1]);
     }

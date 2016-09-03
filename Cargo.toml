@@ -7,3 +7,5 @@ authors = ["André-Patrick Bubel <code@andre-bubel.de>"]
 rand = "*"
 nalgebra = "*"
 num = "*"
+rmp-serialize = "*"
+rustc-serialize = "0.3"
