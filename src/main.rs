@@ -55,7 +55,7 @@ fn main() {
     let timestep = 0.1f64;
     let mut t = 0.0f64;
     let t_end = 10.0f64;
-    let n = 1000000;
+    let n = 10000;
 
     let mut ps: Vec<GravityParticle> = (0..n).map(|_| GravityParticle {
         position: Vector::new(between.ind_sample(&mut rng), between.ind_sample(&mut rng), between.ind_sample(&mut rng)),
