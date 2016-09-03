@@ -27,12 +27,12 @@ struct GravityParticle {
     mass: f64,
 }
 
-fn newtonian_gravity(m1: f64, m2: f64, p1: Vector, p2: Vector) -> Vector {
+fn newtonian_gravity_force(m1: f64, m2: f64, p1: Vector, p2: Vector) -> Vector {
     (- m1 * m2 / (p2 - p1).norm_squared()) * (p2 - p1).normalize()
 }
 
 fn force_between_particles(particle_1: GravityParticle, particle_2: GravityParticle) -> Vector {
-    newtonian_gravity(particle_1.mass, particle_2.mass, particle_1.position, particle_2.position)
+    newtonian_gravity_force(particle_1.mass, particle_2.mass, particle_1.position, particle_2.position)
 }
 
 fn sum_force<'a, I: Iterator<Item = &'a GravityParticle>>(particle: GravityParticle, all_particles: I) -> Vector {
@@ -52,7 +52,7 @@ fn main() {
     let mut ps: Vec<GravityParticle> = (0..n).map(|_| GravityParticle {
         position: Vector::new(between.ind_sample(&mut rng), between.ind_sample(&mut rng), between.ind_sample(&mut rng)),
         mass: between.ind_sample(&mut rng),
-        velocity: Vector::new(0.0, 0.0, 0.0),
+        velocity: Vector::zero(),
     }).collect();
 
     while t < t_end {
