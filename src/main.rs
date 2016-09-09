@@ -3,6 +3,7 @@ extern crate nalgebra as na;
 extern crate num;
 extern crate rmp_serialize as msgpack;
 extern crate rustc_serialize;
+extern crate rayon;
 
 use rustc_serialize::Encodable;
 use msgpack::Encoder;
@@ -13,6 +14,7 @@ use na::{Vector3, Norm};
 use num::Zero;
 use std::io::prelude::*;
 use std::fs::File;
+use rayon::prelude::*;
 
 type Vector = Vector3<f64>;
 
@@ -54,7 +56,7 @@ fn main() {
     let timestep = 0.1f64;
     let mut t = 0.0f64;
     let t_end = 10.0f64;
-    let n = 1000;
+    let n = 10000;
 
     let mut ps: Vec<GravityParticle> = (0..n).map(|_| GravityParticle {
         position: Vector::new(between.ind_sample(&mut rng), between.ind_sample(&mut rng), between.ind_sample(&mut rng)),
@@ -65,7 +67,11 @@ fn main() {
     let mut step = 0u64;
 
     while t < t_end {
-        let forces: Vec<Vector> = ps.iter().map( |p| sum_force(*p, ps.iter()) ).collect();
+        let mut forces = Vec::<Vector>::new();
+        
+        ps.par_iter().weight_max().map(
+            |p| sum_force(*p, ps.iter())
+        ).collect_into(&mut forces);
 
         for i in 0..ps.len() {
             ps[i].velocity = ps[i].velocity + timestep * forces[i];

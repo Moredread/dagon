@@ -10,3 +10,4 @@ num = "*"
 rmp-serialize = "*"
 rustc-serialize = "0.3"
 acacia = { git = "https://github.com/aepsil0n/acacia" }
+rayon = "*"
