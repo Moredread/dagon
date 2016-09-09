@@ -4,16 +4,15 @@ extern crate num;
 extern crate rmp_serialize as msgpack;
 extern crate rustc_serialize;
 
-use rustc_serialize::{Encodable, Decodable};
+use rustc_serialize::Encodable;
 use msgpack::Encoder;
 
 use rand::distributions::{IndependentSample, Range};
 use std::ops::Add;
 use na::{Vector3, Norm};
-use num::{Zero};
+use num::Zero;
 use std::io::prelude::*;
 use std::fs::File;
-use std::fmt::format;
 
 type Vector = Vector3<f64>;
 
@@ -55,7 +54,7 @@ fn main() {
     let timestep = 0.1f64;
     let mut t = 0.0f64;
     let t_end = 10.0f64;
-    let n = 10000;
+    let n = 1000;
 
     let mut ps: Vec<GravityParticle> = (0..n).map(|_| GravityParticle {
         position: Vector::new(between.ind_sample(&mut rng), between.ind_sample(&mut rng), between.ind_sample(&mut rng)),
@@ -74,7 +73,7 @@ fn main() {
         }
 
         let mut buf = Vec::new();
-        ps.encode(&mut Encoder::new(&mut buf));
+        let _ = ps.encode(&mut Encoder::new(&mut buf));
 
         let mut f = File::create(format!("data_{}.dat", step)).expect("Couldn't open file");
         f.write_all(buf.as_ref()).expect("Couldn't write to file");
