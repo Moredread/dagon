@@ -67,8 +67,9 @@ fn main() {
     let mut step = 0u64;
 
     while t < t_end {
+        println!("Timestep {}: time {}", step, t);
         let mut forces = Vec::<Vector>::new();
-        
+
         ps.par_iter().weight_max().map(
             |p| sum_force(*p, ps.iter())
         ).collect_into(&mut forces);
@@ -86,7 +87,5 @@ fn main() {
 
         t += timestep;
         step += 1;
-
-        println!("{} {} {}", t, ps[0].position[0], ps[0].position[1]);
     }
 }
