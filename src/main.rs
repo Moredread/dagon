@@ -1,3 +1,9 @@
+#![feature(plugin)]
+#![plugin(herbie_lint)]
+
+#![feature(plugin)]
+#![plugin(clippy)]
+
 extern crate rand;
 extern crate nalgebra as na;
 extern crate num;

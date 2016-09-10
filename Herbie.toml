@@ -1,0 +1,2 @@
+# Path to the database.
+db_path = "Herbie.db"
