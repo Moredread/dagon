@@ -19,8 +19,8 @@ use std::ops::Add;
 use na::{Vector3, Norm};
 use num::Zero;
 use std::io::prelude::*;
-use std::fs::File;
 use rayon::prelude::*;
+use std::fs::*;
 
 type Vector = Vector3<f64>;
 
@@ -64,6 +64,11 @@ fn main() {
     let t_end = 10.0f64;
     let n = 10000;
 
+    match std::fs::metadata("data") {
+        Ok(meta) => if !meta.is_dir() { panic!("Target path exists, but is not a directory") },
+        Err(_) => { let _ = std::fs::create_dir("data").expect("Couldn't create directory"); }
+    }
+
     let mut ps: Vec<GravityParticle> = (0..n).map(|_| GravityParticle {
         position: Vector::new(between.ind_sample(&mut rng), between.ind_sample(&mut rng), between.ind_sample(&mut rng)),
         mass: between.ind_sample(&mut rng),
@@ -88,7 +93,7 @@ fn main() {
         let mut buf = Vec::new();
         let _ = ps.encode(&mut Encoder::new(&mut buf));
 
-        let mut f = File::create(format!("data_{}.dat", step)).expect("Couldn't open file");
+        let mut f = File::create(format!("data/data_{}.dat", step)).expect("Couldn't open file");
         f.write_all(buf.as_ref()).expect("Couldn't write to file");
 
         t += timestep;
