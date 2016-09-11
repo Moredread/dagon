@@ -2,6 +2,11 @@
 name = "dagon"
 version = "0.0.1"
 authors = ["André-Patrick Bubel <code@andre-bubel.de>"]
+description = "An astrophysical hydrodynamics and n-body experiment"
+homepage = "https://github.com/Moredread/dagon"
+repository = "https://github.com/Moredread/dagon"
+readme = "README.md"
+license = "GPL-3.0+"
 
 [dependencies]
 rand = "*"
