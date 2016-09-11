@@ -50,6 +50,20 @@ fn sum_force<'a, I: Iterator<Item = &'a GravityParticle>>(particle: GravityParti
         .fold(Vector::zero(), Vector::add)
 }
 
+fn try_makedir(path: &str) -> std::io::Result<()> {
+    match std::fs::metadata(path) {
+        Ok(meta) => {
+            if !meta.is_dir() {
+                Err(std::io::Error::new(std::io::ErrorKind::Other,
+                                        "Target path exists, but is not a directory"))
+            } else {
+                Ok(())
+            }
+        }
+        Err(_) => std::fs::create_dir(path),
+    }
+}
+
 fn main() {
     let domain_range = Range::new(0f64, 1.);
     let mut rng = rand::thread_rng();
@@ -59,14 +73,7 @@ fn main() {
     let finish_time = 10.0f64;
     let n = 10000;
 
-    match std::fs::metadata("data") {
-        Ok(meta) => {
-            if !meta.is_dir() {
-                panic!("Target path exists, but is not a directory")
-            }
-        }
-        Err(_) => std::fs::create_dir("data").expect("Couldn't create directory"),
-    }
+    try_makedir("data").expect("Couldn't create dir");
 
     let mut ps: Vec<GravityParticle> = (0..n)
         .map(|_| {
