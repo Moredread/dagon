@@ -24,17 +24,6 @@ use std::fs::*;
 
 type Vector = Vector3<f64>;
 
-struct Data {
-    density: f64,
-    velocity: Vector,
-}
-
-struct Mesh {
-    cells: Vec<Data>,
-    n_width: usize,
-    cell_width: f64,
-}
-
 #[derive(RustcEncodable, RustcDecodable, PartialEq, Copy, Clone)]
 struct GravityParticle {
     position: Vector,
@@ -56,12 +45,12 @@ fn sum_force<'a, I: Iterator<Item = &'a GravityParticle>>(particle: GravityParti
 }
 
 fn main() {
-    let between = Range::new(0f64, 1.);
+    let domain_range = Range::new(0f64, 1.);
     let mut rng = rand::thread_rng();
 
     let timestep = 0.1f64;
-    let mut t = 0.0f64;
-    let t_end = 10.0f64;
+    let mut current_time = 0.0f64;
+    let finish_time = 10.0f64;
     let n = 10000;
 
     match std::fs::metadata("data") {
@@ -70,15 +59,15 @@ fn main() {
     }
 
     let mut ps: Vec<GravityParticle> = (0..n).map(|_| GravityParticle {
-        position: Vector::new(between.ind_sample(&mut rng), between.ind_sample(&mut rng), between.ind_sample(&mut rng)),
-        mass: between.ind_sample(&mut rng),
+        position: Vector::new(domain_range.ind_sample(&mut rng), domain_range.ind_sample(&mut rng), domain_range.ind_sample(&mut rng)),
+        mass: domain_range.ind_sample(&mut rng),
         velocity: Vector::zero(),
     }).collect();
 
     let mut step = 0u64;
 
-    while t < t_end {
-        println!("Timestep {}: time {}", step, t);
+    while current_time < finish_time {
+        println!("Timestep {}: time {}", step, current_time);
         let mut forces = Vec::<Vector>::new();
 
         ps.par_iter().weight_max().map(
@@ -96,7 +85,7 @@ fn main() {
         let mut f = File::create(format!("data/data_{}.dat", step)).expect("Couldn't open file");
         f.write_all(buf.as_ref()).expect("Couldn't write to file");
 
-        t += timestep;
+        current_time += timestep;
         step += 1;
     }
 }
