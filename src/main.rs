@@ -32,16 +32,22 @@ struct GravityParticle {
 }
 
 fn newtonian_gravity_force(m1: f64, m2: f64, p1: Vector, p2: Vector) -> Vector {
-    (- m1 * m2 / (p2 - p1).norm_squared()) * (p2 - p1).normalize()
+    (-m1 * m2 / (p2 - p1).norm_squared()) * (p2 - p1).normalize()
 }
 
 fn force_between_particles(particle_1: GravityParticle, particle_2: GravityParticle) -> Vector {
-    newtonian_gravity_force(particle_1.mass, particle_2.mass, particle_1.position, particle_2.position)
+    newtonian_gravity_force(particle_1.mass,
+                            particle_2.mass,
+                            particle_1.position,
+                            particle_2.position)
 }
 
-fn sum_force<'a, I: Iterator<Item = &'a GravityParticle>>(particle: GravityParticle, all_particles: I) -> Vector {
-    all_particles.filter(|x| **x != particle).
-        map(|x| force_between_particles(*x, particle)).fold(Vector::zero(), Vector::add)
+fn sum_force<'a, I: Iterator<Item = &'a GravityParticle>>(particle: GravityParticle,
+                                                          all_particles: I)
+                                                          -> Vector {
+    all_particles.filter(|x| **x != particle)
+        .map(|x| force_between_particles(*x, particle))
+        .fold(Vector::zero(), Vector::add)
 }
 
 fn main() {
@@ -54,15 +60,25 @@ fn main() {
     let n = 10000;
 
     match std::fs::metadata("data") {
-        Ok(meta) => if !meta.is_dir() { panic!("Target path exists, but is not a directory") },
-        Err(_) => std::fs::create_dir("data").expect("Couldn't create directory")
+        Ok(meta) => {
+            if !meta.is_dir() {
+                panic!("Target path exists, but is not a directory")
+            }
+        }
+        Err(_) => std::fs::create_dir("data").expect("Couldn't create directory"),
     }
 
-    let mut ps: Vec<GravityParticle> = (0..n).map(|_| GravityParticle {
-        position: Vector::new(domain_range.ind_sample(&mut rng), domain_range.ind_sample(&mut rng), domain_range.ind_sample(&mut rng)),
-        mass: domain_range.ind_sample(&mut rng),
-        velocity: Vector::zero(),
-    }).collect();
+    let mut ps: Vec<GravityParticle> = (0..n)
+        .map(|_| {
+            GravityParticle {
+                position: Vector::new(domain_range.ind_sample(&mut rng),
+                                      domain_range.ind_sample(&mut rng),
+                                      domain_range.ind_sample(&mut rng)),
+                mass: domain_range.ind_sample(&mut rng),
+                velocity: Vector::zero(),
+            }
+        })
+        .collect();
 
     let mut step = 0u64;
 
@@ -70,9 +86,10 @@ fn main() {
         println!("Timestep {}: time {}", step, current_time);
         let mut forces = Vec::<Vector>::new();
 
-        ps.par_iter().weight_max().map(
-            |p| sum_force(*p, ps.iter())
-        ).collect_into(&mut forces);
+        ps.par_iter()
+            .weight_max()
+            .map(|p| sum_force(*p, ps.iter()))
+            .collect_into(&mut forces);
 
         for i in 0..ps.len() {
             ps[i].velocity = ps[i].velocity + timestep * forces[i];
