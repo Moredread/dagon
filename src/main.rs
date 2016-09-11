@@ -1,5 +1,5 @@
-#![feature(plugin)]
-#![plugin(herbie_lint)]
+#![cfg_attr(feature="herbie-lint", feature(plugin))]
+#![cfg_attr(feature="herbie-lint", plugin(herbie_lint))]
 
 #![feature(plugin)]
 #![plugin(clippy)]
