@@ -66,7 +66,7 @@ fn main() {
 
     match std::fs::metadata("data") {
         Ok(meta) => if !meta.is_dir() { panic!("Target path exists, but is not a directory") },
-        Err(_) => { let _ = std::fs::create_dir("data").expect("Couldn't create directory"); }
+        Err(_) => std::fs::create_dir("data").expect("Couldn't create directory")
     }
 
     let mut ps: Vec<GravityParticle> = (0..n).map(|_| GravityParticle {
