@@ -21,3 +21,6 @@ herbie-lint = {version = "*", optional = true}
 
 [features]
 default = []
+
+[profile.dev]
+opt-level = 3
