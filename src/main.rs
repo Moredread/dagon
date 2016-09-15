@@ -10,17 +10,17 @@ extern crate num;
 extern crate rmp_serialize as msgpack;
 extern crate rustc_serialize;
 extern crate rayon;
+extern crate acacia;
 
-use rustc_serialize::Encodable;
 use msgpack::Encoder;
-
-use rand::distributions::{IndependentSample, Range};
-use std::ops::Add;
-use na::{Point3, Vector3, Norm};
+use na::{Norm, Origin, Point3, Vector3};
 use num::Zero;
-use std::io::prelude::*;
+use rand::distributions::{IndependentSample, Range};
 use rayon::prelude::*;
+use rustc_serialize::Encodable;
 use std::fs::*;
+use std::io::prelude::*;
+use std::ops::Add;
 
 type Vector = Vector3<f64>;
 type Point = Point3<f64>;
