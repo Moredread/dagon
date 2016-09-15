@@ -72,6 +72,7 @@ fn main() {
     let mut current_time = 0.0f64;
     let finish_time = 10.0f64;
     let n = 10000;
+    let mut step = 0u64;
 
     try_makedir("data").expect("Couldn't create dir");
 
@@ -86,8 +87,6 @@ fn main() {
             }
         })
         .collect();
-
-    let mut step = 0u64;
 
     while current_time < finish_time {
         println!("Timestep {}: time {}", step, current_time);
