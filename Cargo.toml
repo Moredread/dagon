@@ -9,15 +9,16 @@ readme = "README.md"
 license = "GPL-3.0+"
 
 [dependencies]
-rand = "*"
-nalgebra = "*"
-num = "*"
-rmp-serialize = "*"
+acacia = "0.0"
+rand = "0.3"  # limited by acacia
+num = "0.1"  # limited by acacia
+nalgebra = ">=0.9, <1.0"  # limited by acacia
+
+rmp-serialize = "0.7"
 rustc-serialize = "0.3"
-acacia = { git = "https://github.com/aepsil0n/acacia" }
-rayon = "*"
-clippy = "*"
-herbie-lint = {version = "*", optional = true}
+rayon = "0.4"
+clippy = "0"
+herbie-lint = {version = "1.0", optional = true}
 
 [features]
 default = []
