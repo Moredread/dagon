@@ -16,22 +16,23 @@ use msgpack::Encoder;
 
 use rand::distributions::{IndependentSample, Range};
 use std::ops::Add;
-use na::{Vector3, Norm};
+use na::{Point3, Vector3, Norm};
 use num::Zero;
 use std::io::prelude::*;
 use rayon::prelude::*;
 use std::fs::*;
 
 type Vector = Vector3<f64>;
+type Point = Point3<f64>;
 
 #[derive(RustcEncodable, RustcDecodable, PartialEq, Copy, Clone)]
 struct GravityParticle {
-    position: Vector,
+    position: Point,
     velocity: Vector,
     mass: f64,
 }
 
-fn newtonian_gravity_force(m1: f64, m2: f64, p1: Vector, p2: Vector) -> Vector {
+fn newtonian_gravity_force(m1: f64, m2: f64, p1: Point, p2: Point) -> Vector {
     (-m1 * m2 / (p2 - p1).norm_squared()) * (p2 - p1).normalize()
 }
 
@@ -64,10 +65,24 @@ fn try_makedir(path: &str) -> std::io::Result<()> {
     }
 }
 
-fn main() {
+fn make_ics(n: u64) -> Vec<GravityParticle> {
     let domain_range = Range::new(0f64, 1.);
     let mut rng = rand::thread_rng();
 
+    (0..n)
+        .map(|_| {
+            GravityParticle {
+                position: Point::new(domain_range.ind_sample(&mut rng),
+                                     domain_range.ind_sample(&mut rng),
+                                     domain_range.ind_sample(&mut rng)),
+                mass: domain_range.ind_sample(&mut rng),
+                velocity: Vector::zero(),
+            }
+        })
+        .collect()
+}
+
+fn main() {
     let timestep = 0.1f64;
     let mut current_time = 0.0f64;
     let finish_time = 10.0f64;
@@ -76,22 +91,12 @@ fn main() {
 
     try_makedir("data").expect("Couldn't create dir");
 
-    let mut ps: Vec<GravityParticle> = (0..n)
-        .map(|_| {
-            GravityParticle {
-                position: Vector::new(domain_range.ind_sample(&mut rng),
-                                      domain_range.ind_sample(&mut rng),
-                                      domain_range.ind_sample(&mut rng)),
-                mass: domain_range.ind_sample(&mut rng),
-                velocity: Vector::zero(),
-            }
-        })
-        .collect();
+    let mut ps = make_ics(n);
 
     while current_time < finish_time {
         println!("Timestep {}: time {}", step, current_time);
-        let mut forces = Vec::<Vector>::new();
 
+        let mut forces = Vec::<Vector>::new();
         ps.par_iter()
             .weight_max()
             .map(|p| sum_force(*p, ps.iter()))
