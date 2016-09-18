@@ -15,7 +15,7 @@ extern crate acacia;
 use acacia::{AssociatedData, DataQuery, Node, Position, Tree};
 use acacia::partition::Ncube;
 use msgpack::Encoder;
-use na::{Norm, Origin, Point3, Vector3, zero, FloatPoint};
+use na::{FloatPoint, Norm, Origin, Point3, Vector3, zero};
 use num::Zero;
 use rand::distributions::{IndependentSample, Range};
 use rayon::prelude::*;
@@ -53,9 +53,9 @@ fn force_between_particles(target_particle: GravityParticle, source_particle: Gr
                             source_particle.position)
 }
 
-fn sum_force<'a, I: Iterator<Item = &'a GravityParticle>>(particle: GravityParticle, all_particles: I) -> Vector {
-    all_particles.filter(|x| **x != particle)
-        .map(|x| force_between_particles(*x, particle))
+fn forces_by_direct_summation<'a, I: Iterator<Item = &'a GravityParticle>>(target_particle: GravityParticle, all_particles: I) -> Vector {
+    all_particles.filter(|source_particle| **source_particle != target_particle)
+        .map(|x| force_between_particles(*x, target_particle))
         .fold(Vector::zero(), Vector::add)
 }
 
@@ -125,7 +125,8 @@ fn main() {
                                      (origin + (com1.to_vector() * m1 + com2.to_vector() * m2) / (m1 + m2), m1 + m2)
                                  } else {
                                      (origin, 0.0)
-                                 }).expect("Couldn't construct tree");
+                                 })
+                .expect("Couldn't construct tree");
 
             let theta = 0.5; // A bit arbitrary but this appears to work
             let tree_gravity: Vector =
@@ -145,7 +146,7 @@ fn main() {
 
         particles.par_iter()
             .weight_max()
-            .map(|p| sum_force(*p, particles.iter()))
+            .map(|p| forces_by_direct_summation(*p, particles.iter()))
             .collect_into(&mut forces);
 
         for i in 0..particles.len() {
