@@ -73,7 +73,7 @@ fn try_makedir(path: &str) -> std::io::Result<()> {
     }
 }
 
-fn make_ics(n: u64) -> Vec<GravityParticle> {
+fn make_random_initial_conditions(n: u64) -> Vec<GravityParticle> {
     let domain_range = Range::new(-1., 1.);
     let mass_range = Range::new(0.1, 1.);
     let mut rng = rand::thread_rng();
@@ -100,7 +100,7 @@ fn main() {
 
     try_makedir("data").expect("Couldn't create dir");
 
-    let mut particles = make_ics(n);
+    let mut particles = make_random_initial_conditions(n);
 
     while current_time < finish_time {
         println!("Timestep {}: time {}", step, current_time);
