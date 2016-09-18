@@ -45,11 +45,12 @@ fn newtonian_gravity_force(m1: f64, m2: f64, p1: Point, p2: Point) -> Vector {
     (-m1 * m2 / (p2 - p1).norm_squared()) * (p2 - p1).normalize()
 }
 
-fn force_between_particles(particle_1: GravityParticle, particle_2: GravityParticle) -> Vector {
-    newtonian_gravity_force(particle_1.mass,
-                            particle_2.mass,
-                            particle_1.position,
-                            particle_2.position)
+// Force of particle source_particle on target_particle
+fn force_between_particles(target_particle: GravityParticle, source_particle: GravityParticle) -> Vector {
+    newtonian_gravity_force(target_particle.mass,
+                            source_particle.mass,
+                            target_particle.position,
+                            source_particle.position)
 }
 
 fn sum_force<'a, I: Iterator<Item = &'a GravityParticle>>(particle: GravityParticle, all_particles: I) -> Vector {
@@ -148,7 +149,7 @@ fn main() {
             .collect_into(&mut forces);
 
         for i in 0..particles.len() {
-            particles[i].velocity = particles[i].velocity + timestep * forces[i];
+            particles[i].velocity = particles[i].velocity + timestep * forces[i] / particles[i].mass;
             particles[i].position = particles[i].position + timestep * particles[i].velocity;
         }
 
