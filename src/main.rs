@@ -59,6 +59,24 @@ fn forces_by_direct_summation<'a, I: Iterator<Item = &'a GravityParticle>>(targe
         .fold(Vector::zero(), Vector::add)
 }
 
+fn forces_from_tree(target_particle: GravityParticle, tree: &Tree<acacia::partition::Ncube<Point, f64>, &GravityParticle, (Point, f64)>) -> Vector {
+
+    let theta = 0.5; // A bit arbitrary but this appears to work
+
+    // This is the recursion criterion. If a branch node passes this, the
+    // query continues on its children.
+    tree.query_data(|node| {
+                    let &(ref center_of_mass, _) = node.data();
+                    let d = FloatPoint::distance(&target_particle.position, center_of_mass);
+                    let delta = FloatPoint::distance(&node.partition().center(), center_of_mass);
+                    d < node.partition().width() / theta + delta
+                })
+                // This collects our force term from each piece of associated data the
+                // tree encounters during recursion.
+                .map(|&(center_of_mass, mass)| newtonian_gravity_force(mass, target_particle.mass, center_of_mass, target_particle.position))
+                .fold(zero(), |a, b| a + b)
+}
+
 fn try_makedir(path: &str) -> std::io::Result<()> {
     match std::fs::metadata(path) {
         Ok(meta) => {
@@ -128,20 +146,13 @@ fn main() {
                                  })
                 .expect("Couldn't construct tree");
 
-            let theta = 0.5; // A bit arbitrary but this appears to work
-            let tree_gravity: Vector =
-                // This is the recursion criterion. If a branch node passes this, the
-                // query continues on its children.
-                tree.query_data(|node| {
-                    let &(ref center_of_mass, _) = node.data();
-                    let d = FloatPoint::distance(&particles[0].position, center_of_mass);
-                    let delta = FloatPoint::distance(&node.partition().center(), center_of_mass);
-                    d < node.partition().width() / theta + delta
-                })
-                // This collects our force term from each piece of associated data the
-                // tree encounters during recursion.
-                .map(|&(center_of_mass, mass)| newtonian_gravity_force(mass, particles[0].mass, center_of_mass, particles[0].position))
-                .fold(zero(), |a, b| a + b);
+            let _: Vec<_> = particles
+                .iter()
+                //.par_iter()
+                //.weight_max()
+                .map(|p| forces_from_tree(*p, &tree))
+                //.collect_into(&mut forces);
+                .collect();
         }
 
         particles.par_iter()
