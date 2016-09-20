@@ -1,0 +1,42 @@
+language: rust
+
+rust:
+  - "nightly"
+#  - "beta"
+#  - "stable"
+
+os:
+  - linux
+
+addons:
+  apt:
+    packages:
+      - libcurl4-openssl-dev
+      - libelf-dev
+      - binutils-dev # optional: only required for the --verify flag of coveralls
+
+sudo: false
+
+cache: cargo
+
+before_script:
+  - pip install 'travis-cargo<0.2' --user
+  - export PATH=/usr/lib/ccache:$HOME/.local/bin:/Users/travis/Library/Python/2.7/bin:$PATH
+
+script:
+  - rustc --version
+  - cargo --version
+  - travis-cargo build
+  - travis-cargo test
+  - travis-cargo --only nightly bench
+  - travis-cargo doc
+
+after_success:
+  - travis-cargo --only nightly doc-upload
+  - if [ ${TRAVIS_OS_NAME} != "osx" ]; then travis-cargo coveralls --no-sudo --verify --exclude-pattern="test/,target/debug/build/"; fi; true
+
+env:
+  global:
+    # override the default `--features unstable` used for the nightly branch
+    - TRAVIS_CARGO_NIGHTLY_FEATURE=""
+    - secure: "GX1jE+cDYpTZ2Mhf7iX5yVjPHTKxBOrbY0s1Gx42dc0VCE/Jp9WosZiq078uPv8p2UF8NnQLTc7O33u/rlv09QvPGDgp6yud2nwLEPuwgi8mgXKcNCmAztTY5HmGyxvaTMZ+rRS+Irx9xwsKxYnXxRuhftHSNcC1hCWTN+m08N7iFEbWHlfSNF0KnXqb8jJHL6T/Xg2gqlzTwl889AQ0lX4H+OHqy7TLXzN6fEmjmglkMQiiID+PDsh8ufSJRlF33VBTXMgfco6OxfAnpmMey1cEPso3/Q0pHj8gHWjulflS0IFMsLOnugD/C2UkoW0PwyWT/fOI+NkCP5zCf0eIq/23waLeAq57dBMHSMTmZT3ySJA9hWzYdfWx+tDbagdbhLHvRTu4jeFfZyh8nPtyc23LHI3SPyaNlxkyMzsL3kJlb5sq/N5Wk8g0V0MXxXSNpC65ax6/HhoyBz5bAyhJNTnWjxbx4ooDKFvDK/L4towJHXOzJjYcwD3ErWvPxHMyBTgohr/Q0qP02ci5h6hMqQL57jMPIsRp+x+NnSk4EsFu1TtuzdSCIa52NGdWGGzSCLE9pNpYVQfwXG4WtGEJHFVXCg9HnFh2v/IuCHMkB9ag55PYNFuVvGNwUjec9dQOl6m3WkmWVQ9e4JMeOXP26E0riTAAW764NcHUDPk7spE="
