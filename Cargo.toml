@@ -21,6 +21,7 @@ clippy = "0"
 herbie-lint = {version = "1.0", optional = true}
 log = "*"
 env_logger = "*"
+ordered-float = "0.2"  # TODO: do we really need this dep?
 
 [features]
 default = []

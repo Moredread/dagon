@@ -15,6 +15,7 @@ extern crate rustc_serialize;
 extern crate rayon;
 extern crate acacia;
 extern crate dagon;
+extern crate ordered_float;
 
 use acacia::Tree;
 use acacia::partition::Ncube;
@@ -27,6 +28,9 @@ use rustc_serialize::Encodable;
 
 use std::fs::*;
 use std::io::prelude::*;
+use std::cmp::max;
+
+use ordered_float::*;
 
 fn main() {
     env_logger::init().unwrap();
@@ -48,12 +52,20 @@ fn main() {
         let mut forces = Vec::<Vector>::new();
 
         {
+            // TODO: might be hard to understand; refactor
+            let domain_width: f64 = 2.1f64 * particles.par_iter().map(|p| (NotNaN::from(p.position.x.abs()),
+                                                                           NotNaN::from(p.position.y.abs()),
+                                                                           NotNaN::from(p.position.z.abs()))).
+                map(|(x, y, z)| max(max(x, y), z)).reduce_with(max).expect("Particle list was empty").into_inner();
+
+            trace!("Domain width is {}", domain_width);
+
             // Construct the tree, taken from acacia example
             let tree = Tree::new(// Pass in an iterator over the objects to store in the tree
                                  // In this case we pass in &PointMass, which implements Positionable.
                                  particles.iter(),
                                  // Shape of the root node
-                                 Ncube::new(origin, 2.0),
+                                 Ncube::new(origin, domain_width),
                                  // The value for the associated data of empty nodes. Here, we associate
                                  // a center of mass and a total mass to each node.
                                  (origin, 0.0),
