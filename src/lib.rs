@@ -57,7 +57,9 @@ pub fn forces_by_direct_summation<'a, I: Iterator<Item = &'a GravityParticle>>(t
         .fold(Vector::zero(), Vector::add)
 }
 
-pub fn forces_from_tree(target_particle: GravityParticle, tree: &Tree<acacia::partition::Ncube<Point, f64>, &GravityParticle, (Point, f64)>) -> Vector {
+pub fn forces_from_tree(target_particle: GravityParticle,
+                        tree: &Tree<acacia::partition::Ncube<Point, f64>, &GravityParticle, (Point, f64)>)
+                        -> Vector {
 
     let theta = 0.5; // A bit arbitrary but this appears to work
 

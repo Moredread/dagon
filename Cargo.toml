@@ -19,6 +19,8 @@ rustc-serialize = "0.3"
 rayon = "0.4"
 clippy = "0"
 herbie-lint = {version = "1.0", optional = true}
+log = "*"
+env_logger = "*"
 
 [features]
 default = []

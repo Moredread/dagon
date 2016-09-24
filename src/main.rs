@@ -4,6 +4,9 @@
 #![feature(plugin)]
 #![plugin(clippy)]
 
+#[macro_use] extern crate log;
+extern crate env_logger;
+
 extern crate rand;
 extern crate nalgebra as na;
 extern crate num;
@@ -26,6 +29,8 @@ use std::fs::*;
 use std::io::prelude::*;
 
 fn main() {
+    env_logger::init().unwrap();
+
     let timestep = 0.1f64;
     let mut current_time = 0.0f64;
     let finish_time = 10.0f64;
@@ -34,10 +39,11 @@ fn main() {
 
     try_makedir("data").expect("Couldn't create dir");
 
+    info!("Initialize random particle (n = {}) distribution", n);
     let mut particles = make_random_initial_conditions(n);
 
     while current_time < finish_time {
-        println!("Timestep {}: time {}", step, current_time);
+        info!("Timestep {}: time {}", step, current_time);
         let origin: Point = Origin::origin();
         let mut forces = Vec::<Vector>::new();
 
@@ -71,16 +77,19 @@ fn main() {
                 .collect();
         }
 
+        trace!("Calculate forces");
         particles.par_iter()
             .weight_max()
             .map(|p| forces_by_direct_summation(*p, particles.iter()))
             .collect_into(&mut forces);
 
+        trace!("Advance velocities and positions");
         for i in 0..particles.len() {
             particles[i].velocity = particles[i].velocity + timestep * forces[i] / particles[i].mass;
             particles[i].position = particles[i].position + timestep * particles[i].velocity;
         }
 
+        trace!("Write data");
         let mut buf = Vec::new();
         let _ = particles.encode(&mut Encoder::new(&mut buf));
 
@@ -91,4 +100,3 @@ fn main() {
         step += 1;
     }
 }
-
