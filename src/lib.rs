@@ -13,13 +13,11 @@ extern crate rayon;
 extern crate acacia;
 
 use acacia::{AssociatedData, DataQuery, Node, Position, Tree};
-use acacia::partition::Ncube;
 use na::{FloatPoint, Norm, Point3, Vector3, zero};
 use num::Zero;
 use rand::distributions::{IndependentSample, Range};
 
 use std::fs::*;
-use std::io::prelude::*;
 use std::ops::Add;
 
 pub type Vector = Vector3<f64>;
