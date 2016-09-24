@@ -14,17 +14,13 @@ extern crate acacia;
 
 use acacia::{AssociatedData, DataQuery, Node, Position, Tree};
 use acacia::partition::Ncube;
-use msgpack::Encoder;
-use na::{FloatPoint, Norm, Origin, Point3, Vector3, zero};
+use na::{FloatPoint, Norm, Point3, Vector3, zero};
 use num::Zero;
 use rand::distributions::{IndependentSample, Range};
-use rayon::prelude::*;
-use rustc_serialize::Encodable;
 
 use std::fs::*;
 use std::io::prelude::*;
 use std::ops::Add;
-use std::io;
 
 pub type Vector = Vector3<f64>;
 pub type Point = Point3<f64>;

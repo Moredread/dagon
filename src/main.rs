@@ -13,21 +13,17 @@ extern crate rayon;
 extern crate acacia;
 extern crate dagon;
 
-use acacia::{AssociatedData, DataQuery, Node, Position, Tree};
+use acacia::Tree;
 use acacia::partition::Ncube;
+
+use dagon::*;
 use msgpack::Encoder;
-use na::{FloatPoint, Norm, Origin, Point3, Vector3, zero};
-use num::Zero;
-use rand::distributions::{IndependentSample, Range};
+use na::Origin;
 use rayon::prelude::*;
 use rustc_serialize::Encodable;
 
 use std::fs::*;
 use std::io::prelude::*;
-use std::ops::Add;
-use std::io;
-
-use dagon::*;
 
 fn main() {
     let timestep = 0.1f64;
