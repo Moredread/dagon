@@ -8,6 +8,9 @@ repository = "https://github.com/Moredread/dagon"
 readme = "README.md"
 license = "GPL-3.0+"
 
+[[bin]]
+name = "dagon-run"
+
 [dependencies]
 acacia = { git = "https://github.com/aepsil0n/acacia" }
 rand = "0.3"  # limited by acacia
