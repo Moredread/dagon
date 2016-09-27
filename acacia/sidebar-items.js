@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["data_tree","Implementation of tree with associated data."],["error","Error types."],["iter","Generic tree iterators."],["partition","Abstraction of spatial partitioning schemes"],["pure_tree","Pure tree implementation."],["traits","Common abstractions for all trees"]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["get_argument_fmtstr_parts","Returns the slice of format string parts in an `Arguments::new_v1` call. Public because it's shared with a lint in print.rs."]],"static":[["USELESS_FORMAT",""]],"struct":[["Pass",""]]});

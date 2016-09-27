@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `Sugg` enum in crate `clippy_lints`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, Sugg">
+
+    <title>clippy_lints::utils::sugg::Sugg - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='../../index.html'>clippy_lints</a>::<wbr><a href='../index.html'>utils</a>::<wbr><a href='index.html'>sugg</a></p><script>window.sidebarCurrent = {name: 'Sugg', ty: 'enum', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content enum">
+<h1 class='fqn'><span class='in-band'>Enum <a href='../../index.html'>clippy_lints</a>::<wbr><a href='../index.html'>utils</a>::<wbr><a href='index.html'>sugg</a>::<wbr><a class='enum' href=''>Sugg</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a id='src-1444' class='srclink' href='../../../src/clippy_lints/utils/sugg.rs.html#17-24' title='goto source code'>[src]</a></span></h1>
+<pre class='rust enum'>pub enum Sugg&lt;'a&gt; {
+    NonParen(<a class='enum' href='https://doc.rust-lang.org/nightly/collections/borrow/enum.Cow.html' title='collections::borrow::Cow'>Cow</a>&lt;'a,&nbsp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>&gt;),
+    MaybeParen(<a class='enum' href='https://doc.rust-lang.org/nightly/collections/borrow/enum.Cow.html' title='collections::borrow::Cow'>Cow</a>&lt;'a,&nbsp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>&gt;),
+    BinOp(<a class='enum' href='https://doc.rust-lang.org/nightly/syntax/util/parser/enum.AssocOp.html' title='syntax::util::parser::AssocOp'>AssocOp</a>,&nbsp;<a class='enum' href='https://doc.rust-lang.org/nightly/collections/borrow/enum.Cow.html' title='collections::borrow::Cow'>Cow</a>&lt;'a,&nbsp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>&gt;),
+}</pre><div class='docblock'><p>A helper type to build suggestion correctly handling parenthesis.</p>
+</div><h2 class='variants'>Variants</h2>
+<span id='variant.NonParen' class='variant'><span id='NonParen.v' class='invisible'><code>NonParen(<a class='enum' href='https://doc.rust-lang.org/nightly/collections/borrow/enum.Cow.html' title='collections::borrow::Cow'>Cow</a>&lt;'a,&nbsp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>&gt;)</code></span></span><div class='docblock'><p>An expression that never needs parenthesis such as <code>1337</code> or <code>[0; 42]</code>.</p>
+</div><span id='variant.MaybeParen' class='variant'><span id='MaybeParen.v' class='invisible'><code>MaybeParen(<a class='enum' href='https://doc.rust-lang.org/nightly/collections/borrow/enum.Cow.html' title='collections::borrow::Cow'>Cow</a>&lt;'a,&nbsp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>&gt;)</code></span></span><div class='docblock'><p>An expression that does not fit in other variants.</p>
+</div><span id='variant.BinOp' class='variant'><span id='BinOp.v' class='invisible'><code>BinOp(<a class='enum' href='https://doc.rust-lang.org/nightly/syntax/util/parser/enum.AssocOp.html' title='syntax::util::parser::AssocOp'>AssocOp</a>,&nbsp;<a class='enum' href='https://doc.rust-lang.org/nightly/collections/borrow/enum.Cow.html' title='collections::borrow::Cow'>Cow</a>&lt;'a,&nbsp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>&gt;)</code></span></span><div class='docblock'><p>A binary operator expression, including <code>as</code>-casts and explicit type coercion.</p>
+</div><h2 id='methods'>Methods</h2><h3 class='impl'><span class='in-band'><code>impl&lt;'a&gt; <a class='enum' href='../../../clippy_lints/utils/sugg/enum.Sugg.html' title='clippy_lints::utils::sugg::Sugg'>Sugg</a>&lt;'a&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a id='src-1462' class='srclink' href='../../../src/clippy_lints/utils/sugg.rs.html#40-179' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.hir_opt' class='method'><span id='hir_opt.v' class='invisible'><code>fn <a href='#method.hir_opt' class='fnname'>hir_opt</a>(cx: &amp;<a class='struct' href='https://doc.rust-lang.org/nightly/rustc/lint/context/struct.LateContext.html' title='rustc::lint::context::LateContext'>LateContext</a>, expr: &amp;<a class='struct' href='https://doc.rust-lang.org/nightly/rustc/hir/struct.Expr.html' title='rustc::hir::Expr'>Expr</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='enum' href='../../../clippy_lints/utils/sugg/enum.Sugg.html' title='clippy_lints::utils::sugg::Sugg'>Sugg</a>&lt;'a&gt;&gt;</code></span></h4>
+<div class='docblock'><p>Prepare a suggestion from an expression.</p>
+</div><h4 id='method.hir' class='method'><span id='hir.v' class='invisible'><code>fn <a href='#method.hir' class='fnname'>hir</a>(cx: &amp;<a class='struct' href='https://doc.rust-lang.org/nightly/rustc/lint/context/struct.LateContext.html' title='rustc::lint::context::LateContext'>LateContext</a>, expr: &amp;<a class='struct' href='https://doc.rust-lang.org/nightly/rustc/hir/struct.Expr.html' title='rustc::hir::Expr'>Expr</a>, default: &amp;'a <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='enum' href='../../../clippy_lints/utils/sugg/enum.Sugg.html' title='clippy_lints::utils::sugg::Sugg'>Sugg</a>&lt;'a&gt;</code></span></h4>
+<div class='docblock'><p>Convenience function around <code>hir_opt</code> for suggestions with a default text.</p>
+</div><h4 id='method.ast' class='method'><span id='ast.v' class='invisible'><code>fn <a href='#method.ast' class='fnname'>ast</a>(cx: &amp;<a class='struct' href='https://doc.rust-lang.org/nightly/rustc/lint/context/struct.EarlyContext.html' title='rustc::lint::context::EarlyContext'>EarlyContext</a>, expr: &amp;<a class='struct' href='https://doc.rust-lang.org/nightly/syntax/ast/struct.Expr.html' title='syntax::ast::Expr'>Expr</a>, default: &amp;'a <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='enum' href='../../../clippy_lints/utils/sugg/enum.Sugg.html' title='clippy_lints::utils::sugg::Sugg'>Sugg</a>&lt;'a&gt;</code></span></h4>
+<div class='docblock'><p>Prepare a suggestion from an expression.</p>
+</div><h4 id='method.and' class='method'><span id='and.v' class='invisible'><code>fn <a href='#method.and' class='fnname'>and</a>(self, rhs: Self) -&gt; <a class='enum' href='../../../clippy_lints/utils/sugg/enum.Sugg.html' title='clippy_lints::utils::sugg::Sugg'>Sugg</a>&lt;'static&gt;</code></span></h4>
+<div class='docblock'><p>Convenience method to create the <code>&lt;lhs&gt; &amp;&amp; &lt;rhs&gt;</code> suggestion.</p>
+</div><h4 id='method.as_ty' class='method'><span id='as_ty.v' class='invisible'><code>fn <a href='#method.as_ty' class='fnname'>as_ty</a>&lt;R:&nbsp;<a class='trait' href='https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html' title='core::fmt::Display'>Display</a>&gt;(self, rhs: R) -&gt; <a class='enum' href='../../../clippy_lints/utils/sugg/enum.Sugg.html' title='clippy_lints::utils::sugg::Sugg'>Sugg</a>&lt;'static&gt;</code></span></h4>
+<div class='docblock'><p>Convenience method to create the <code>&lt;lhs&gt; as &lt;rhs&gt;</code> suggestion.</p>
+</div><h4 id='method.addr' class='method'><span id='addr.v' class='invisible'><code>fn <a href='#method.addr' class='fnname'>addr</a>(self) -&gt; <a class='enum' href='../../../clippy_lints/utils/sugg/enum.Sugg.html' title='clippy_lints::utils::sugg::Sugg'>Sugg</a>&lt;'static&gt;</code></span></h4>
+<div class='docblock'><p>Convenience method to create the <code>&amp;&lt;expr&gt;</code> suggestion.</p>
+</div><h4 id='method.mut_addr' class='method'><span id='mut_addr.v' class='invisible'><code>fn <a href='#method.mut_addr' class='fnname'>mut_addr</a>(self) -&gt; <a class='enum' href='../../../clippy_lints/utils/sugg/enum.Sugg.html' title='clippy_lints::utils::sugg::Sugg'>Sugg</a>&lt;'static&gt;</code></span></h4>
+<div class='docblock'><p>Convenience method to create the <code>&amp;mut &lt;expr&gt;</code> suggestion.</p>
+</div><h4 id='method.deref' class='method'><span id='deref.v' class='invisible'><code>fn <a href='#method.deref' class='fnname'>deref</a>(self) -&gt; <a class='enum' href='../../../clippy_lints/utils/sugg/enum.Sugg.html' title='clippy_lints::utils::sugg::Sugg'>Sugg</a>&lt;'static&gt;</code></span></h4>
+<div class='docblock'><p>Convenience method to create the <code>*&lt;expr&gt;</code> suggestion.</p>
+</div><h4 id='method.range' class='method'><span id='range.v' class='invisible'><code>fn <a href='#method.range' class='fnname'>range</a>(self, end: Self, limit: <a class='enum' href='https://doc.rust-lang.org/nightly/syntax/ast/enum.RangeLimits.html' title='syntax::ast::RangeLimits'>RangeLimits</a>) -&gt; <a class='enum' href='../../../clippy_lints/utils/sugg/enum.Sugg.html' title='clippy_lints::utils::sugg::Sugg'>Sugg</a>&lt;'static&gt;</code></span></h4>
+<div class='docblock'><p>Convenience method to create the <code>&lt;lhs&gt;..&lt;rhs&gt;</code> or <code>&lt;lhs&gt;...&lt;rhs&gt;</code> suggestion.</p>
+</div><h4 id='method.maybe_par' class='method'><span id='maybe_par.v' class='invisible'><code>fn <a href='#method.maybe_par' class='fnname'>maybe_par</a>(self) -&gt; Self</code></span></h4>
+<div class='docblock'><p>Add parenthesis to any expression that might need them. Suitable to the <code>self</code> argument of
+a method call (eg. to build <code>bar.foo()</code> or <code>(1 + 2).foo()</code>).</p>
+</div></div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><span class='in-band'><code>impl&lt;'a&gt; <a class='trait' href='https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html' title='core::fmt::Display'>Display</a> for <a class='enum' href='../../../clippy_lints/utils/sugg/enum.Sugg.html' title='clippy_lints::utils::sugg::Sugg'>Sugg</a>&lt;'a&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a id='src-1454' class='srclink' href='../../../src/clippy_lints/utils/sugg.rs.html#29-37' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.fmt' class='method'><span id='fmt.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html#tymethod.fmt' class='fnname'>fmt</a>(&amp;self, f: &amp;mut <a class='struct' href='https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html' title='core::fmt::Formatter'>Formatter</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>,&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/core/fmt/struct.Error.html' title='core::fmt::Error'>Error</a>&gt;</code></span></h4>
+<div class='docblock'><p>Formats the value using the given formatter.</p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl&lt;'a,&nbsp;'b&gt; <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Add.html' title='core::ops::Add'>Add</a>&lt;<a class='enum' href='../../../clippy_lints/utils/sugg/enum.Sugg.html' title='clippy_lints::utils::sugg::Sugg'>Sugg</a>&lt;'b&gt;&gt; for <a class='enum' href='../../../clippy_lints/utils/sugg/enum.Sugg.html' title='clippy_lints::utils::sugg::Sugg'>Sugg</a>&lt;'a&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a id='src-1510' class='srclink' href='../../../src/clippy_lints/utils/sugg.rs.html#181-186' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='associatedtype.Output' class='type'><span id='Output.t' class='invisible'><code>type <a href='https://doc.rust-lang.org/nightly/core/ops/trait.Add.html#associatedtype.Output' class='type'>Output</a> = <a class='enum' href='../../../clippy_lints/utils/sugg/enum.Sugg.html' title='clippy_lints::utils::sugg::Sugg'>Sugg</a>&lt;'static&gt;</code></span></h4>
+<div class='docblock'><p>The resulting type after applying the <code>+</code> operator</p>
+</div><h4 id='method.add' class='method'><span id='add.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/ops/trait.Add.html#tymethod.add' class='fnname'>add</a>(self, rhs: <a class='enum' href='../../../clippy_lints/utils/sugg/enum.Sugg.html' title='clippy_lints::utils::sugg::Sugg'>Sugg</a>&lt;'b&gt;) -&gt; <a class='enum' href='../../../clippy_lints/utils/sugg/enum.Sugg.html' title='clippy_lints::utils::sugg::Sugg'>Sugg</a>&lt;'static&gt;</code></span></h4>
+<div class='docblock'><p>The method for the <code>+</code> operator</p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl&lt;'a,&nbsp;'b&gt; <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Sub.html' title='core::ops::Sub'>Sub</a>&lt;<a class='enum' href='../../../clippy_lints/utils/sugg/enum.Sugg.html' title='clippy_lints::utils::sugg::Sugg'>Sugg</a>&lt;'b&gt;&gt; for <a class='enum' href='../../../clippy_lints/utils/sugg/enum.Sugg.html' title='clippy_lints::utils::sugg::Sugg'>Sugg</a>&lt;'a&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a id='src-1517' class='srclink' href='../../../src/clippy_lints/utils/sugg.rs.html#188-193' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='associatedtype.Output-1' class='type'><span id='Output.t-1' class='invisible'><code>type <a href='https://doc.rust-lang.org/nightly/core/ops/trait.Sub.html#associatedtype.Output' class='type'>Output</a> = <a class='enum' href='../../../clippy_lints/utils/sugg/enum.Sugg.html' title='clippy_lints::utils::sugg::Sugg'>Sugg</a>&lt;'static&gt;</code></span></h4>
+<div class='docblock'><p>The resulting type after applying the <code>-</code> operator</p>
+</div><h4 id='method.sub' class='method'><span id='sub.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/ops/trait.Sub.html#tymethod.sub' class='fnname'>sub</a>(self, rhs: <a class='enum' href='../../../clippy_lints/utils/sugg/enum.Sugg.html' title='clippy_lints::utils::sugg::Sugg'>Sugg</a>&lt;'b&gt;) -&gt; <a class='enum' href='../../../clippy_lints/utils/sugg/enum.Sugg.html' title='clippy_lints::utils::sugg::Sugg'>Sugg</a>&lt;'static&gt;</code></span></h4>
+<div class='docblock'><p>The method for the <code>-</code> operator</p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl&lt;'a&gt; <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Not.html' title='core::ops::Not'>Not</a> for <a class='enum' href='../../../clippy_lints/utils/sugg/enum.Sugg.html' title='clippy_lints::utils::sugg::Sugg'>Sugg</a>&lt;'a&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a id='src-1524' class='srclink' href='../../../src/clippy_lints/utils/sugg.rs.html#195-200' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='associatedtype.Output-2' class='type'><span id='Output.t-2' class='invisible'><code>type <a href='https://doc.rust-lang.org/nightly/core/ops/trait.Not.html#associatedtype.Output' class='type'>Output</a> = <a class='enum' href='../../../clippy_lints/utils/sugg/enum.Sugg.html' title='clippy_lints::utils::sugg::Sugg'>Sugg</a>&lt;'static&gt;</code></span></h4>
+<div class='docblock'><p>The resulting type after applying the <code>!</code> operator</p>
+</div><h4 id='method.not' class='method'><span id='not.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/ops/trait.Not.html#tymethod.not' class='fnname'>not</a>(self) -&gt; <a class='enum' href='../../../clippy_lints/utils/sugg/enum.Sugg.html' title='clippy_lints::utils::sugg::Sugg'>Sugg</a>&lt;'static&gt;</code></span></h4>
+<div class='docblock'><p>The method for the unary <code>!</code> operator</p>
+</div></div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../../";
+        window.currentCrate = "clippy_lints";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../../../jquery.js"></script>
+    <script src="../../../main.js"></script>
+    
+    <script defer src="../../../search-index.js"></script>
+</body>
+</html>

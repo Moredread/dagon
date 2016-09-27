@@ -1,0 +1,1 @@
+initSidebarItems({"constant":[["BUILTIN_TYPES","List of the built-in types names."]]});

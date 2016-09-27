@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Iter","An iterator over the objects in a tree."],["RecurseData","An iterator over the objects in a tree, that only recurses as deep as specified by some predicate."],["RecurseObjects","An iterator over the objects in a tree, that only recurses as deep as specified by some predicate."]]});

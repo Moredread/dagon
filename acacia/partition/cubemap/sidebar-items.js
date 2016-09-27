@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Axis","A coordinate axis"],["CubeMap","A cubemap partition of a 3-vector space"],["Direction","An axis direction"]],"fn":[["axis_vector_triple","Get the triple of axis vectors"]],"struct":[["Quad","A quad-shaped partition of the side of a cubemap"]]});

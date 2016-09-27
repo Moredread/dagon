@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["check_attrs",""],["strip_doc_comment_decoration","Cleanup documentation decoration (`///` and such)."]],"static":[["DOC_MARKDOWN",""]],"struct":[["Doc",""]]});

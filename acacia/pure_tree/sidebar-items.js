@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["PureTree","A pure N-dimensional tree"]]});
