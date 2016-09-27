@@ -30,7 +30,7 @@ script:
   - travis-cargo build
   - travis-cargo test
   - travis-cargo --only nightly bench
-  - travis-cargo nightly doc
+  - travis-cargo doc
 
 after_success:
   - if [ ${TRAVIS_OS_NAME} != "osx" ]; then travis-cargo --only nightly doc-upload; fi; true
