@@ -5,6 +5,8 @@
 
 An astrophysical hydrodynamics and n-body experiment in Rust.
 
+Very experimental and definitely not stable! 
+
 ## Testing for unstable numerical expressions
 
 The [herbie linter](https://github.com/mcarton/rust-herbie-lint) can be
