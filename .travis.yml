@@ -30,10 +30,10 @@ script:
   - travis-cargo build
   - travis-cargo test
   - travis-cargo --only nightly bench
-  - travis-cargo doc
+  - travis-cargo nightly doc
 
 after_success:
-  - travis-cargo --only nightly doc-upload
+  - if [ ${TRAVIS_OS_NAME} != "osx" ]; then travis-cargo --only nightly doc-upload; fi; true
   - if [ ${TRAVIS_OS_NAME} != "osx" ]; then travis-cargo coveralls --no-sudo --verify --exclude-pattern="test/,target/debug/build/"; fi; true
 
 env:
