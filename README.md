@@ -1,6 +1,7 @@
 # dagon
 
 [![Build Status](https://travis-ci.org/Moredread/dagon.svg?branch=master)](https://travis-ci.org/Moredread/dagon)
+[![Coverage Status](https://coveralls.io/repos/github/Moredread/dagon/badge.svg?branch=master)](https://coveralls.io/github/Moredread/dagon?branch=master)
 [![Docs Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://moredread.github.io/dagon/)
 
 An astrophysical hydrodynamics and n-body experiment in Rust.
