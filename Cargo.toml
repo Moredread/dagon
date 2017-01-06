@@ -1,6 +1,6 @@
 [package]
 name = "dagon"
-version = "0.0.1"
+version = "0.0.2"
 authors = ["André-Patrick Bubel <code@andre-bubel.de>"]
 description = "An astrophysical hydrodynamics and n-body experiment"
 homepage = "https://github.com/Moredread/dagon"
