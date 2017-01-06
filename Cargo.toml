@@ -17,7 +17,7 @@ rand = "0.3"  # limited by acacia
 num = "0.1"  # limited by acacia
 nalgebra = ">=0.9, <1.0"  # limited by acacia
 
-rmp-serialize = "0.7"
+rmp-serialize = "0.8"
 rustc-serialize = "0.3"
 rayon = "0.4"
 clippy = "0"
