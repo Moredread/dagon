@@ -105,7 +105,7 @@ fn main() {
         let mut buf = Vec::new();
         let _ = particles.encode(&mut Encoder::new(&mut buf));
 
-        let mut f = File::create(format!("data/data_{}.dat", step)).expect("Couldn't open file");
+        let mut f = File::create(format!("data/data_{:01$}.dat", step, 3)).expect("Couldn't open file");
         f.write_all(buf.as_ref()).expect("Couldn't write to file");
 
         current_time += timestep;
