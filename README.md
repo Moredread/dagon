@@ -6,7 +6,10 @@
 
 An astrophysical hydrodynamics and n-body experiment in Rust.
 
-Very experimental and definitely not stable! 
+Very experimental and definitely not stable! I'm mainly trying implementing a
+few ideas in Rust, but am currently not (yet) focusing on "good" solutions. So
+if some parts are ugly, please let me know, but I will likely
+restructure/rewrite much of the code anyways.
 
 ## Testing for unstable numerical expressions
 
