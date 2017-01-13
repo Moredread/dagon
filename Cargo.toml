@@ -12,7 +12,7 @@ license = "GPL-3.0+"
 name = "dagon-run"
 
 [dependencies]
-acacia = { git = "https://github.com/aepsil0n/acacia" }
+acacia = "0.1"
 rand = "0.3"  # limited by acacia
 num = "0.1"  # limited by acacia
 nalgebra = ">=0.9, <1.0"  # limited by acacia
